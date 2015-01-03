@@ -20,8 +20,3 @@ def parse(file_name, delimiter):
             parsed_data.append(line)
 
     return parsed_data
-
-
-if __name__ == '__main__':
-    for item in parse('test.csv', ','):
-        print item

@@ -4,6 +4,7 @@ Calculates SAS values, delta values and writes into CSV files.
 
 import csv
 import sys
+from datetime import datetime
 import parse
 
 
@@ -51,17 +52,27 @@ def csv_writer(data, filename):
 if __name__ == '__main__':
     parsed_values = str_to_float(parse.parse(FILENAME, ','))
 
-    # build SAS:
-    sas_lst = get_SAS(parsed_values, sas_coef=0.5)
+    # build SAS list:
+    sas = get_SAS(parsed_values, sas_coef=0.5)
 
-    # build Subs deltas:
-    subs_delta_lst = get_deltas(parsed_values)
+    # build Subs deltas list:
+    subs_delta = get_deltas(parsed_values)
 
-    # build SAS deltas:
-    sas_delta_lst = get_deltas(sas_lst)
+    # build SAS deltas list:
+    sas_delta = get_deltas(sas)
+
+    # inserting labels before appropriate tables:
+    sas.insert(0, ['SAS:'])
+    subs_delta.insert(0, ['Subs deltas:'])
+    sas_delta.insert(0, ['SAS deltas:'])
+
+    # aggregate lists:
+    agg_lst = []
+    for lst in [sas, subs_delta, sas_delta]:
+        agg_lst.extend(lst)
+
+    # get current time:
+    time = str(datetime.now().time())[:8].replace(':', '.')
 
     # WRITE to CSV:
-# !!! TODO: write into a single excel to different sheets
-    csv_writer(sas_lst, 'SAS.csv')
-    csv_writer(subs_delta_lst, 'Subs_delta.csv')
-    csv_writer(sas_delta_lst, 'SAS_delta.csv')
+    csv_writer(agg_lst, 'results_' + time + '.csv')
