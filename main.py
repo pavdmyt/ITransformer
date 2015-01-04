@@ -8,9 +8,6 @@ from datetime import datetime
 import parse
 
 
-FILENAME = sys.argv[1]
-
-
 def str_to_float(parsed_data):
     """Converts each value into a float."""
     # parsed_data = lists of strings
@@ -50,6 +47,7 @@ def csv_writer(data, filename):
 
 
 if __name__ == '__main__':
+    FILENAME = sys.argv[1]
     parsed_values = str_to_float(parse.parse(FILENAME, ','))
 
     # build SAS list:
